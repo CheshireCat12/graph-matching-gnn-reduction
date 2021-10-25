@@ -1,6 +1,6 @@
 import pytest
 
-from graph_gnn_embedding.utils.coordinator_gnn_embedding.coordinator_gnn_embedding_classifier import CoordinatorGNNEmbeddingClassifier
+from graph_gnn_embedding.utils.coordinator.coordinator_gnn_embedding_classifier import CoordinatorGNNEmbeddingClassifier
 
 
 ###### Train #########

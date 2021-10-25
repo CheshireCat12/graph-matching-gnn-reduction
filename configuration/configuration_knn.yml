@@ -2,8 +2,8 @@ enzymes:
   coordinator:
     dataset: enzymes
     params_edit_cost: !!python/tuple [1.0, 1.0, 1.0, 1.0, euclidean]
-    folder_dataset: ./data_gnn/reduced_graphs_ENZYMES_full_1932/data/
-  folder_results: ./results_gnn/knn/enzymes_full_1932
+    folder_dataset: ./data/reduced_graphs_ENZYMES/data/
+  folder_results: ./results_gnn/knn/enzymes
 general:
   optimize: True
   tuning:

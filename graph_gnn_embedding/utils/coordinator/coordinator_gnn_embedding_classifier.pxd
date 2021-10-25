@@ -1,4 +1,4 @@
-from graph_gnn_embedding.utils.coordinator_gnn_embedding.coordinator_gnn_embedding cimport CoordinatorGNNEmbedding
+from graph_gnn_embedding.utils.coordinator.coordinator_gnn_embedding cimport CoordinatorGNNEmbedding
 from graph_pkg.loader.loader_train_test_val_split cimport LoaderTrainTestValSplit
 from graph_pkg.graph.graph cimport Graph
 

@@ -1,7 +1,9 @@
 from graph_pkg.edit_cost.edit_cost cimport EditCost
-from graph_pkg.edit_cost.edit_cost_gnn_embedding cimport EditCostGNNEmbedding
 from graph_pkg.algorithm.graph_edit_distance cimport GED
-from graph_gnn_embedding.loader_gnn_embedding.loader_gnn_embedding_base cimport LoaderGNNEmbeddingBase as LoaderGNNEmbedding
+from graph_gnn_embedding.edit_cost.edit_cost_gnn_embedding cimport EditCostGNNEmbedding
+from graph_gnn_embedding.loader.loader_gnn_embedding_base cimport (
+    LoaderGNNEmbeddingBase as LoaderGNNEmbedding
+)
 
 cdef class CoordinatorGNNEmbedding:
 

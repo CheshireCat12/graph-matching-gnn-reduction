@@ -1,6 +1,6 @@
 import pytest
 
-from graph_gnn_embedding.utils.coordinator_gnn_embedding.coordinator_gnn_embedding import CoordinatorGNNEmbedding
+from graph_gnn_embedding.utils.coordinator.coordinator_gnn_embedding import CoordinatorGNNEmbedding
 
 def test_default_enzymes():
     coordinator = CoordinatorGNNEmbedding(dataset='enzymes',

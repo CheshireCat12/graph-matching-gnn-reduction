@@ -4,7 +4,7 @@
 This file contains the coordinator class. It is used to load the graphs given the name of the dataset.
 The EditCost is also loaded automatically given the name of the dataset.
 """
-from graph_pkg.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING
+from graph_gnn_embedding.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING
 
 
 cdef class CoordinatorGNNEmbedding:

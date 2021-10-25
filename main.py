@@ -30,7 +30,7 @@ def print_fancy_title(text, size_max=50):
 
 
 def run_experiment(args):
-    parameters = load_config(args.exp, args.gnn)
+    parameters = load_config(args.exp)
     if args.all:
         for dataset in __DATASETS:
             args.dataset = dataset

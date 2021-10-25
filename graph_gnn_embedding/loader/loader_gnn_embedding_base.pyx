@@ -6,7 +6,8 @@ from glob import glob
 from xmltodict import parse
 from progress.bar import Bar
 
-from graph_pkg.utils.constants cimport EXTENSION_GRAPHML
+from graph_gnn_embedding.utils.constants cimport EXTENSION_GRAPHML
+
 
 cdef class LoaderGNNEmbeddingBase:
     """
