@@ -28,38 +28,6 @@ install_requires = [
 ]
 
 
-# Install the external libraries (e.g. sigma.js used for the visualization of the graphs).
-def friendly(command_subclass):
-    """
-    A decorator to customized setuptools install command
-    - Download the external libraries.
-    """
-    origin_run = command_subclass.run
-
-    def modified_run(self):
-        origin_run(self)
-
-        dir_ = './external/sigma.js/'
-        github_repo = 'https://github.com/jacomyal/sigma.js.git'
-        if not os.path.isdir(dir_):
-            import git
-            git.Repo.clone_from(github_repo, dir_, branch='master')
-
-    command_subclass.run = modified_run
-    return command_subclass
-
-
-@friendly
-class CustomDevelopCommand(develop):
-    pass
-
-
-@friendly
-class CustomInstallCommand(install):
-    pass
-
-
-
 def extension_modules():
     """
     Find the cython extension modules to install
@@ -68,7 +36,7 @@ def extension_modules():
     import numpy
     ext = []
     files = glob('**/*.pyx', recursive=True)
-    packages = ['graph_pkg', 'experiments', 'hierarchical_graph']
+    packages = ['graph_gnn_embedding', 'experiments_gnn_embedding']
     for file in files:
         if any(file.startswith(pkg) for pkg in packages):
             ext_name = file[:-4].replace('/', '.')
@@ -90,9 +58,9 @@ for e in extensions:
     e.cython_directives = {'language_level': "3",  # all are Python-3
                            'embedsignature': True}
 
-setup(name='graph_pkg',
+setup(name='graph-matching-gnn-reduction',
       version='0.1.1',
-      description='A graph module',
+      description='A Cython package use to perform graph matching with reduced graphs',
       author='Anthony Gillioz',
       author_email='anthony.gillioz@outlook.com',
       install_requires=install_requires,
@@ -101,8 +69,4 @@ setup(name='graph_pkg',
           'cython>=0.28.4',
       ],
       ext_modules=extensions,
-      cmdclass={
-          'develop': CustomDevelopCommand,
-          'install': CustomInstallCommand,
-      },
       )

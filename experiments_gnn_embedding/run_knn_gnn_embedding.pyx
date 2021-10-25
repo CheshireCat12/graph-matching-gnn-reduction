@@ -9,10 +9,10 @@ cimport numpy as np
 import pandas as pd
 from progress.bar import Bar
 
-from experiments.runner import Runner
+from graph_pkg.experiments.runner import Runner
 from graph_pkg.algorithm.knn cimport KNNClassifier
-from graph_pkg.utils.functions.helper import calc_accuracy
-from graph_pkg.utils.coordinator_gnn_embedding.coordinator_gnn_embedding_classifier import CoordinatorGNNEmbeddingClassifier
+from graph_gnn_embedding.utils.functions.helper import calc_accuracy
+from graph_gnn_embedding.utils.coordinator_gnn_embedding.coordinator_gnn_embedding_classifier import CoordinatorGNNEmbeddingClassifier
 
 class RunnerKNNGNN(Runner):
 

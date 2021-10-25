@@ -1,11 +1,9 @@
-import pytest
-
-from graph_pkg.graph.label.label_node_embedding import LabelNodeEmbedding
-from graph_pkg.edit_cost.edit_cost_gnn_embedding import EditCostGNNEmbedding
-from graph_pkg.graph.node import Node
-
-from graph_pkg.graph.node import Node
 import numpy as np
+import pytest
+from graph_pkg.edit_cost.edit_cost_gnn_embedding import EditCostGNNEmbedding
+from graph_pkg.graph.label.label_node_embedding import LabelNodeEmbedding
+from graph_pkg.graph.node import Node
+
 
 @pytest.mark.parametrize('e_cost, expected',
                          [
