@@ -4,6 +4,7 @@ from bunch import Bunch
 
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 from graph_pkg.utils.functions.load_config import load_config
+from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 
 __EXPERIMENTS_GNN = {
     'knn': run_knn_gnn_embedding
@@ -27,11 +28,6 @@ def print_fancy_title(text, size_max=50):
     print(f'\n{"=" * size_max}\n'
           f'=={" " * border}{text}{" " * (border + is_odd)}==\n'
           f'{"=" * size_max}')
-
-
-def load_constants(filename):
-
-    pass
 
 
 def run_experiment(args):
@@ -99,4 +95,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print(args)
-    run_experiment(args)
+    print(DATASETS[args.dataset])
+    # run_experiment(args)
