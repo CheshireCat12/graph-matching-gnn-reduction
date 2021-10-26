@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 
 from bunch import Bunch
 
-from experiments_gnn_embedding.run_knn_gnn_embedding import run_knn_gnn_embedding
+from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 from graph_pkg.utils.functions.load_config import load_config
 
 __EXPERIMENTS_GNN = {
@@ -27,6 +27,11 @@ def print_fancy_title(text, size_max=50):
     print(f'\n{"=" * size_max}\n'
           f'=={" " * border}{text}{" " * (border + is_odd)}==\n'
           f'{"=" * size_max}')
+
+
+def load_constants(filename):
+
+    pass
 
 
 def run_experiment(args):
@@ -55,18 +60,43 @@ def _run(args, parameters):
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Run Experiments')
-    parser.add_argument('-e', '--exp', type=str, required=True,
+
+    # Parameters of the experiment
+    parser.add_argument('--experiment', type=str, required=True,
                         choices=__EXPERIMENTS_GNN.keys(),
                         help='Choose the experiment to run.')
-    parser.add_argument('-d', '--dataset', type=str,
-                        default='letter',
-                        choices=['letter', 'AIDS', 'mutagenicity', 'NCI1',
-                                 'proteins_tu', 'enzymes',
-                                 'collab', 'reddit_binary', 'IMDB_binary'],
-                        help='Choose the dataset.')
-    parser.add_argument('-a', '--all', type=bool,
-                        default=False,
-                        choices=[True, False],
-                        help='Run on all available datasets.')
+    parser.add_argument('--optimize',
+                        action='store_true',
+                        help='Perform the optimization of the hyperparameters.')
+    parser.add_argument('--num-cores', type=int, default=0,
+                        help='Run the code in parallel if the num cores > 0.')
+
+    # Hyperparameters
+    parser.add_argument('--alpha', nargs='*',
+                        help='Choose the alpha parameters that weights the influence of node/edge cost in GED.\n'
+                             '(e.g., --alpha start, end, step_size)')
+    parser.add_argument('--ks', nargs='*', type=int,
+                        help='Choose the parameters k that corresponds to the number of neighbors for the KNN.')
+
+    # Dataset parameters
+    parser.add_argument('--dataset', type=str, required=True,
+                        choices=__DATASETS,
+                        help='Choose the dataset. (default: enzymes)')
+    parser.add_argument('--percentage', type=str, required=True,
+                        choices=['100', '50'],
+                        help='Choose the percentage of reduced graphs.')
+    parser.add_argument('--specific-name', type=str, default=False,
+                        help='Run for a single dataset split.')
+
+    # Value to save
+    parser.add_argument('--save-predictions',
+                        action='store_true',
+                        help='Save the predictions done on the test set.')
+    parser.add_argument('--save-dist-matrix',
+                        action='store_true',
+                        help='Save the distance matrix between the graphs in the train and test set.')
+
     args = parser.parse_args()
+
+    print(args)
     run_experiment(args)

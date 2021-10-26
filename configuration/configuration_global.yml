@@ -1,0 +1,7 @@
+# This configuration file contains the parameters that don't change over time.
+# (e.g., the dataset name, the GED's edit cost or the data folders)
+enzymes:
+  coordinator:
+    dataset: enzymes
+    params_edit_cost: !!python/tuple [1.0, 1.0, 1.0, 1.0, euclidean]
+    folder_dataset: ./data/ENZYMES/
