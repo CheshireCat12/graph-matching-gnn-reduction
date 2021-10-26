@@ -1,10 +1,12 @@
-from argparse import ArgumentParser
-
+import os.path
+from argparse import ArgumentParser, Namespace
+from glob import glob
 from bunch import Bunch
 
-from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 from graph_pkg.utils.functions.load_config import load_config
+from graph_pkg.utils.logger import Logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
+from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 
 __EXPERIMENTS_GNN = {
     'knn': run_knn_gnn_embedding
@@ -30,28 +32,27 @@ def print_fancy_title(text, size_max=50):
           f'{"=" * size_max}')
 
 
-def run_experiment(args):
-    parameters = load_config(args.exp)
-    if args.all:
-        for dataset in __DATASETS:
-            args.dataset = dataset
-
-            _run(args, parameters)
-    else:
-        _run(args, parameters)
-
-    print_fancy_title('Final')
+# def run_experiment(args):
+#         for dataset in __DATASETS:
+#             args.dataset = dataset
+#
+#             _run(args, parameters)
+#     else:
+#         _run(args, parameters)
+#
+#     print_fancy_title('Final')
 
 
-def _run(args, parameters):
-    # Fusion the selected dataset parameters with the general parameters
-    parameters = Bunch({**parameters[args.dataset], **parameters['general']})
+# def _run(args, parameters):
+#     # Fusion the selected dataset parameters with the general parameters
+#     parameters = Bunch({**parameters[args.dataset], **parameters['general']})
+#
+#     print_fancy_title('Parameters')
+#     print(parameters)
+#
+#     print_fancy_title('Run')
+#     __EXPERIMENTS_GNN[args.exp](parameters)
 
-    print_fancy_title('Parameters')
-    print(parameters)
-
-    print_fancy_title('Run')
-    __EXPERIMENTS_GNN[args.exp](parameters)
 
 
 if __name__ == '__main__':
@@ -92,8 +93,43 @@ if __name__ == '__main__':
                         action='store_true',
                         help='Save the distance matrix between the graphs in the train and test set.')
 
+    parser.add_argument('--name-experiment', type=str, required=True,
+                        help='Specify the experiment name under which to save the experiment')
+
     args = parser.parse_args()
 
-    print(args)
-    print(DATASETS[args.dataset])
-    # run_experiment(args)
+    coordinator = DATASETS[args.dataset]['coordinator']
+    dataset_folders = os.path.join(coordinator['dataset_folder'],
+                                   args.percentage,
+                                   '*')
+    coordinators = []
+
+    for dataset_folder in glob(dataset_folders):
+        if dataset_folder.split('/')[-1] == args.specific_name:
+            coordinator_tmp = dict(coordinator)
+            coordinator_tmp['dataset_folder'] = dataset_folder
+            coordinators.append(coordinator_tmp)
+        elif not args.specific_name:
+            coordinator_tmp = dict(coordinator)
+            coordinator_tmp['dataset_folder'] = dataset_folder
+            coordinators.append(coordinator_tmp)
+
+    if not coordinators:
+        raise FileNotFoundError(f'Folder {args.specific_name} not found!')
+
+    # Merge the command line parameters with the constant parameters
+    arguments = Namespace(**vars(args), **{'coordinators': coordinators, 'current_coordinator': None,})
+
+    folder_result = f'./results/{args.experiment}/{args.dataset}/{args.name_experiment}/'
+
+    filename = os.path.join(folder_result, 'results_general.json')
+    logger = Logger(filename)
+    logger.data['parameters'] = vars(arguments)
+
+    for idx, coordinator in enumerate(arguments.coordinators):
+        current_exp = f'exp_{coordinator["dataset_folder"].split("/")[-1]}'
+        logger.set_lvl(current_exp)
+        arguments.current_coordinator = coordinator
+
+        __EXPERIMENTS_GNN[args.exp](arguments, logger)
+

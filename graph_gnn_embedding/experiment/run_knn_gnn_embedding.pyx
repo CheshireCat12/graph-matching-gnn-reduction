@@ -16,7 +16,7 @@ from graph_gnn_embedding.utils.coordinator.coordinator_gnn_embedding_classifier 
 
 class RunnerKNNGNN(Runner):
 
-    def __init__(self, parameters):
+    def __init__(self, parameters, logger):
         super(RunnerKNNGNN, self).__init__(parameters)
 
     def run(self):
@@ -26,7 +26,6 @@ class RunnerKNNGNN(Runner):
         coordinator_params = self.parameters.coordinator
         print(coordinator_params)
 
-        run_full_dataset = False if self.parameters.coordinator['dataset'] in ['collab', 'reddit_binary'] else True
 
         self.save_stats('The code is running\n', 'log.txt', save_params=False)
 
@@ -188,6 +187,6 @@ class RunnerKNNGNN(Runner):
         # self.parameters.coordinator['params_edit_cost'] = params_edit_cost
 
 
-cpdef void run_knn_gnn_embedding(parameters):
-    run_h_knn_ = RunnerKNNGNN(parameters)
+cpdef void run_knn_gnn_embedding(parameters, logger):
+    run_h_knn_ = RunnerKNNGNN(parameters, logger)
     run_h_knn_.run()
