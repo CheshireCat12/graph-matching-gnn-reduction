@@ -28,6 +28,8 @@
       <excludeFolder url="file://$MODULE_DIR$/analysis/analysis_lc_h_knn" />
       <excludeFolder url="file://$MODULE_DIR$/data_gnn" />
       <excludeFolder url="file://$MODULE_DIR$/data_gnn/reduced_graphs_ENZYMES/data" />
+      <excludeFolder url="file://$MODULE_DIR$/graph_matching_gnn_reduction.egg-info" />
+      <excludeFolder url="file://$MODULE_DIR$/results_gnn" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (graph-matching-gnn-reduction)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
