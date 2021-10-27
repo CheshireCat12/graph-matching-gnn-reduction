@@ -145,7 +145,7 @@ class RunnerKNNGNN(Runner):
 
         self.logger.save_data()
 
-        current_folder = self.parameters.current_coordinator["folder_dataset"].split('/')[-2]
+        current_folder = self.parameters.current_coordinator["folder_dataset"].split('/')[-3]
         filename = f'predictions_{current_folder}.npy'
         if self.parameters.save_predictions:
             self.save_predictions(predictions,

@@ -143,4 +143,3 @@ if __name__ == '__main__':
         arguments.current_coordinator = coordinator
 
         __EXPERIMENTS_GNN[arguments.experiment](arguments, logger)
-        break
