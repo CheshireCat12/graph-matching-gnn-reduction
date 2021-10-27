@@ -21,11 +21,11 @@ cdef class CoordinatorGNNEmbedding:
     """
 
     def __init__(self,
-                 str dataset,
+                 str dataset_name,
                  tuple params_edit_cost,
                  str folder_dataset='',
                  bint verbose=False):
-        self.dataset = dataset
+        self.dataset = dataset_name
         self.params_edit_cost = params_edit_cost
         self.folder_dataset = folder_dataset
         self._init_system()

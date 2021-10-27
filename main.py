@@ -4,7 +4,7 @@ from glob import glob
 from bunch import Bunch
 
 from graph_pkg.utils.functions.load_config import load_config
-from graph_pkg.utils.logger import Logger
+import graph_pkg.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     coordinator = DATASETS[args.dataset]['coordinator']
-    dataset_folders = os.path.join(coordinator['dataset_folder'],
+    dataset_folders = os.path.join(coordinator['folder_dataset'],
                                    args.percentage,
                                    '*')
     coordinators = []
@@ -107,29 +107,40 @@ if __name__ == '__main__':
     for dataset_folder in glob(dataset_folders):
         if dataset_folder.split('/')[-1] == args.specific_name:
             coordinator_tmp = dict(coordinator)
-            coordinator_tmp['dataset_folder'] = dataset_folder
+            coordinator_tmp['folder_dataset'] = dataset_folder + '/data/'
+            coordinator_tmp['folder_labels'] = dataset_folder + '/data/'
             coordinators.append(coordinator_tmp)
         elif not args.specific_name:
             coordinator_tmp = dict(coordinator)
-            coordinator_tmp['dataset_folder'] = dataset_folder
+            coordinator_tmp['folder_dataset'] = dataset_folder + '/data/'
+            coordinator_tmp['folder_labels'] = dataset_folder + '/data/'
             coordinators.append(coordinator_tmp)
 
     if not coordinators:
         raise FileNotFoundError(f'Folder {args.specific_name} not found!')
 
+    folder_results = f'./results/{args.experiment}/{args.dataset}/{args.name_experiment}/'
+
     # Merge the command line parameters with the constant parameters
-    arguments = Namespace(**vars(args), **{'coordinators': coordinators, 'current_coordinator': None,})
+    arguments = Namespace(**vars(args),
+                          **{'coordinators': coordinators,
+                             'current_coordinator': None,
+                             'folder_results': folder_results})
 
-    folder_result = f'./results/{args.experiment}/{args.dataset}/{args.name_experiment}/'
 
-    filename = os.path.join(folder_result, 'results_general.json')
-    logger = Logger(filename)
+    filename = os.path.join(folder_results, 'results_general.json')
+    logger = logger.Logger(filename)
     logger.data['parameters'] = vars(arguments)
 
+    print(arguments)
+    print('##########\n\n')
+
     for idx, coordinator in enumerate(arguments.coordinators):
-        current_exp = f'exp_{coordinator["dataset_folder"].split("/")[-1]}'
+        current_exp = f'exp_{coordinator["folder_dataset"].split("/")[-3]}'
+
+        print(current_exp)
         logger.set_lvl(current_exp)
         arguments.current_coordinator = coordinator
 
-        __EXPERIMENTS_GNN[args.exp](arguments, logger)
-
+        __EXPERIMENTS_GNN[arguments.experiment](arguments, logger)
+        break

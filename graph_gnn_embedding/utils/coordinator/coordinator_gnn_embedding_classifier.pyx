@@ -1,5 +1,4 @@
-from graph_pkg.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS, DEFAULT_LABELS_TO_CODE
-
+from graph_gnn_embedding.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS
 
 cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
     """
@@ -21,7 +20,7 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
     """
 
     def __init__(self,
-                 str dataset,
+                 str dataset_name,
                  tuple params_edit_cost,
                  str folder_dataset='',
                  str folder_labels=''):
@@ -32,7 +31,7 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
         :param folder_dataset:
         :param folder_labels:
         """
-        super().__init__(dataset, params_edit_cost, folder_dataset)
+        super().__init__(dataset_name, params_edit_cost, folder_dataset)
         self.folder_labels = folder_labels
         self.loader_split = LoaderTrainTestValSplit(self.folder_dataset)
 
@@ -41,6 +40,7 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
             return self._folder_dataset
         def __set__(self, value):
             if value == '':
+                print('not goood ######## %%%%%%%%%%%')
                 self._folder_labels = DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS[self.dataset]
             else:
                 self._folder_labels = value
@@ -49,9 +49,6 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
         def __get__(self):
             return {graph.filename: graph for graph in self.graphs}
 
-    property lbl_to_code:
-        def __get__(self):
-            return DEFAULT_LABELS_TO_CODE[self.dataset]
 
     cpdef tuple _split_dataset(self, list data):
         cdef:
