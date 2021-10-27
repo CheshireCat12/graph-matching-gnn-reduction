@@ -19,12 +19,13 @@ cdef class LoaderGNNEmbeddingBase:
     load()
     """
 
-    def __init__(self, str folder):
+    def __init__(self, str folder, bint verbose=False):
         """
 
         :param folder:
         """
         self._folder = folder
+        self._verbose = verbose
 
     cpdef int _format_idx(self, str idx):
         return int(idx)
@@ -49,16 +50,17 @@ cdef class LoaderGNNEmbeddingBase:
         cdef object parsed_data
 
         files = os.path.join(self._folder, EXTENSION_GRAPHML)
-        print(files)
         graph_files = glob(files)
 
         if not graph_files:
             raise FileNotFoundError(f'No graphs found in {self._folder}')
 
         graphs = []
-        print('** Loading Graphs **')
 
-        bar = Bar(f'Loading', max=len(graph_files))
+        if self._verbose:
+            print('** Loading Graphs **')
+            bar = Bar(f'Loading', max=len(graph_files))
+
         for graph_file in sorted(graph_files):
             with open(graph_file) as file:
                 graph_text = "".join(file.readlines())
@@ -69,11 +71,12 @@ cdef class LoaderGNNEmbeddingBase:
             self._construct_graph(graph_filename, parsed_data)
 
             graphs.append(self._constructed_graph)
+            if self._verbose:
+                bar.next()
 
-            bar.next()
-        bar.finish()
-
-        print(f'==> {len(graphs)} graphs loaded')
+        if self._verbose:
+            bar.finish()
+            print(f'==> {len(graphs)} graphs loaded')
         return graphs
 
     cpdef void _construct_graph(self, str graph_filename, object parsed_data):

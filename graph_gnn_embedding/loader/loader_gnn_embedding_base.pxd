@@ -8,6 +8,7 @@ from graph_pkg.graph.label.label_edge cimport LabelEdge
 cdef class LoaderGNNEmbeddingBase:
 
     cdef:
+        bint _verbose
         str _folder
         str __EXTENSION
         Graph _constructed_graph

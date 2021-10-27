@@ -68,12 +68,17 @@ if __name__ == '__main__':
     parser.add_argument('--num-cores', type=int, default=0,
                         help='Run the code in parallel if the num cores > 0.')
 
-    # Hyperparameters
+    # Hyperparameters to tune
     parser.add_argument('--alpha', nargs='*',
                         help='Choose the alpha parameters that weights the influence of node/edge cost in GED.\n'
                              '(e.g., --alpha start, end, step_size)')
     parser.add_argument('--ks', nargs='*', type=int,
                         help='Choose the parameters k that corresponds to the number of neighbors for the KNN.')
+
+    parser.add_argument('--best-parameters', nargs='*',
+                        help='if optimize is False '
+                             'then the hyperparameters alpha, k are set based on these values.\n'
+                             '(e.g., --best-parameters k alpha)')
 
     # Dataset parameters
     parser.add_argument('--dataset', type=str, required=True,
@@ -127,7 +132,6 @@ if __name__ == '__main__':
                              'current_coordinator': None,
                              'folder_results': folder_results})
 
-
     filename = os.path.join(folder_results, 'results_general.json')
     logger = logger.Logger(filename)
     logger.data['parameters'] = vars(arguments)
@@ -135,6 +139,7 @@ if __name__ == '__main__':
 
     for idx, coordinator in enumerate(arguments.coordinators):
         current_exp = f'exp_{coordinator["folder_dataset"].split("/")[-3]}'
+        print(f'[{1+idx}/{len(arguments.coordinators)}] Run dataset: {current_exp}')
         logger.set_lvl(current_exp)
         arguments.current_coordinator = coordinator
 

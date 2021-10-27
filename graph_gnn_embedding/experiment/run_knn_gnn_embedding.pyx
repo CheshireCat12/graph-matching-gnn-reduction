@@ -34,8 +34,10 @@ class RunnerKNNGNN(Runner):
 
         if self.parameters.optimize:
             best_params = self.optimization()
-            # best_params = (1, 0.7)
 
+            self.evaluate(best_params)
+        else:
+            best_params = [type_(val) for val, type_ in zip(self.parameters.best_parameters, [int, float])]
             self.evaluate(best_params)
 
 
@@ -151,6 +153,8 @@ class RunnerKNNGNN(Runner):
                                   np.array(labels_test, dtype=np.int32),
                                   filename)
 
+        if self.parameters.save_dist_matrix:
+            self.save_ged_distances(current_folder, knn.current_distances)
 
 cpdef void run_knn_gnn_embedding(parameters, logger):
     run_h_knn_ = RunnerKNNGNN(parameters, logger)

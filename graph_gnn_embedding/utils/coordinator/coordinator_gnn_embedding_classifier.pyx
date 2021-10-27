@@ -40,7 +40,6 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
             return self._folder_dataset
         def __set__(self, value):
             if value == '':
-                print('not goood ######## %%%%%%%%%%%')
                 self._folder_labels = DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS[self.dataset]
             else:
                 self._folder_labels = value
