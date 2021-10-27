@@ -132,13 +132,9 @@ if __name__ == '__main__':
     logger = logger.Logger(filename)
     logger.data['parameters'] = vars(arguments)
 
-    print(arguments)
-    print('##########\n\n')
 
     for idx, coordinator in enumerate(arguments.coordinators):
         current_exp = f'exp_{coordinator["folder_dataset"].split("/")[-3]}'
-
-        print(current_exp)
         logger.set_lvl(current_exp)
         arguments.current_coordinator = coordinator
 

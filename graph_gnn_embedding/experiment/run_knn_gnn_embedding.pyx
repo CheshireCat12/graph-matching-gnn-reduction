@@ -103,6 +103,7 @@ class RunnerKNNGNN(Runner):
                          f'Elapse time: {prediction_time:.2f}s'
             bar.next()
         bar.finish()
+        Bar.suffix = f'%(index)d/%(max)d'
 
         message = f'Best acc on validation : {self.logger.data["best_acc"]:.2f}, ' \
                   f'Best params: {self.logger.data["best_params"]}'
@@ -114,8 +115,6 @@ class RunnerKNNGNN(Runner):
     def evaluate(self, best_params):
         cdef:
             KNNClassifier knn
-
-        print(best_params)
 
         best_k, best_alpha = best_params
         self.coordinator.edit_cost.update_alpha(best_alpha)
@@ -136,7 +135,7 @@ class RunnerKNNGNN(Runner):
 
         acc = calc_accuracy(np.array(labels_test, dtype=np.int32), predictions)
 
-        message = f'Best acc on Test : {acc:.2f}, best params: {best_params}, time: {prediction_time}\n'
+        message = f'Best acc on Test : {acc:.2f}, best params: {best_params}, time: {prediction_time:.2f}s\n'
 
         print(message)
 
