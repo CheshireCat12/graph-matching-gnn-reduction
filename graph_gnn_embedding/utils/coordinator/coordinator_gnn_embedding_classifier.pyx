@@ -1,4 +1,3 @@
-from graph_gnn_embedding.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS
 
 cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
     """
@@ -39,10 +38,8 @@ cdef class CoordinatorGNNEmbeddingClassifier(CoordinatorGNNEmbedding):
         def __get__(self):
             return self._folder_dataset
         def __set__(self, value):
-            if value == '':
-                self._folder_labels = DEFAULT_FOLDERS_GNN_EMBEDDING_LABELS[self.dataset]
-            else:
-                self._folder_labels = value
+            assert value != '', 'Dataset Label folder not given!'
+            self._folder_labels = value
 
     property graph_filename_to_graph:
         def __get__(self):

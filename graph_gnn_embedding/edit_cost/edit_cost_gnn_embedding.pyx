@@ -1,6 +1,6 @@
 import numpy as np
 cimport numpy as np
-
+from libc.math cimport fmin
 
 cdef class EditCostGNNEmbedding(EditCost):
 
@@ -59,7 +59,7 @@ cdef class EditCostGNNEmbedding(EditCost):
         # sub_cost = 1 / (sigmoid_term + np.exp(-alpha * dist + sigma))
         #
         # return self.alpha_node * sub_cost
-        return self.alpha_node * np.min([dist, 2*self.c_insert_node])
+        return self.alpha_node * fmin(dist, 2*self.c_insert_node)
 
     cpdef double cost_insert_edge(self, Edge edge) except? -1:
         return self.c_cost_insert_edge(edge)

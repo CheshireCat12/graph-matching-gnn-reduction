@@ -31,8 +31,8 @@ cdef class LoaderGNNEmbeddingBase:
         return int(idx)
 
     cpdef LabelBase _formatted_lbl_node(self, attr):
-        cdef:
-            double[::1] vector
+        # cdef:
+        #     double[::1] vector
 
         vector = np.array(json.loads(attr))
 

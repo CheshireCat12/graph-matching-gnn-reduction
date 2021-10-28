@@ -8,14 +8,10 @@ import graph_pkg.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 
+
 __EXPERIMENTS_GNN = {
     'knn': run_knn_gnn_embedding
 }
-
-__DATASETS = [
-    'enzymes',
-]
-
 
 def print_fancy_title(text, size_max=50):
     """
@@ -82,7 +78,7 @@ if __name__ == '__main__':
 
     # Dataset parameters
     parser.add_argument('--dataset', type=str, required=True,
-                        choices=__DATASETS,
+                        choices=DATASETS,
                         help='Choose the dataset. (default: enzymes)')
     parser.add_argument('--percentage', type=str, required=True,
                         choices=['100', '50'],

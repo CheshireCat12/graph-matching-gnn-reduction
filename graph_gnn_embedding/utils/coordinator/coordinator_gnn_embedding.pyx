@@ -4,8 +4,6 @@
 This file contains the coordinator class. It is used to load the graphs given the name of the dataset.
 The EditCost is also loaded automatically given the name of the dataset.
 """
-from graph_gnn_embedding.utils.constants cimport DEFAULT_FOLDERS_GNN_EMBEDDING
-
 
 cdef class CoordinatorGNNEmbedding:
     """
@@ -38,17 +36,14 @@ cdef class CoordinatorGNNEmbedding:
         def __get__(self):
             return self._dataset
         def __set__(self, str value):
-            assert value in DEFAULT_FOLDERS_GNN_EMBEDDING, f'The dataset {value} is not available!'
             self._dataset = value
 
     property folder_dataset:
         def __get__(self):
             return self._folder_dataset
         def __set__(self, value):
-            if value == '':
-                self._folder_dataset = DEFAULT_FOLDERS_GNN_EMBEDDING[self.dataset]
-            else:
-                self._folder_dataset = value
+            assert value != '', 'Empty dataset folder!'
+            self._folder_dataset = value
 
     cdef int _init_system(self) except? -1:
         """
