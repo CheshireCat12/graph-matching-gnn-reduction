@@ -3,7 +3,6 @@ from argparse import ArgumentParser, Namespace
 from glob import glob
 from bunch import Bunch
 
-from graph_pkg.utils.functions.load_config import load_config
 import graph_pkg.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
