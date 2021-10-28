@@ -28,28 +28,6 @@ def print_fancy_title(text, size_max=50):
           f'{"=" * size_max}')
 
 
-# def run_experiment(args):
-#         for dataset in __DATASETS:
-#             args.dataset = dataset
-#
-#             _run(args, parameters)
-#     else:
-#         _run(args, parameters)
-#
-#     print_fancy_title('Final')
-
-
-# def _run(args, parameters):
-#     # Fusion the selected dataset parameters with the general parameters
-#     parameters = Bunch({**parameters[args.dataset], **parameters['general']})
-#
-#     print_fancy_title('Parameters')
-#     print(parameters)
-#
-#     print_fancy_title('Run')
-#     __EXPERIMENTS_GNN[args.exp](parameters)
-
-
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Run Experiments')
