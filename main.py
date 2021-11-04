@@ -1,7 +1,6 @@
 import os.path
 from argparse import ArgumentParser, Namespace
 from glob import glob
-from bunch import Bunch
 
 import graph_pkg.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
