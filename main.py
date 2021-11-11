@@ -57,7 +57,6 @@ if __name__ == '__main__':
                         choices=DATASETS,
                         help='Choose the dataset. (default: enzymes)')
     parser.add_argument('--percentage', type=str, required=True,
-                        choices=['100', '50'],
                         help='Choose the percentage of reduced graphs.')
     parser.add_argument('--specific-name', type=str, default=False,
                         help='Run for a single dataset split.')
