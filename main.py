@@ -80,6 +80,8 @@ if __name__ == '__main__':
                                    '*')
     coordinators = []
 
+    print(dataset_folders)
+
     for dataset_folder in glob(dataset_folders):
         if dataset_folder.split('/')[-1] == args.specific_name:
             coordinator_tmp = dict(coordinator)
