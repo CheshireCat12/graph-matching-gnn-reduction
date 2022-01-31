@@ -5,10 +5,12 @@ from glob import glob
 import graph_pkg.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
+from graph_gnn_embedding.experiment.run_median_graph import run_median_graph
 
 
 __EXPERIMENTS_GNN = {
-    'knn': run_knn_gnn_embedding
+    'knn': run_knn_gnn_embedding,
+    'median': run_median_graph
 }
 
 def print_fancy_title(text, size_max=50):
