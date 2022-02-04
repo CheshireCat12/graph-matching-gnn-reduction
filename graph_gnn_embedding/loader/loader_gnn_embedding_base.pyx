@@ -63,6 +63,7 @@ cdef class LoaderGNNEmbeddingBase:
 
         for graph_file in sorted(graph_files):
             with open(graph_file) as file:
+
                 graph_text = "".join(file.readlines())
                 *_, graph_filename = graph_file.split('/')
 

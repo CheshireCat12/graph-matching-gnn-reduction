@@ -74,6 +74,15 @@ if __name__ == '__main__':
     parser.add_argument('--name-experiment', type=str, required=True,
                         help='Specify the experiment name under which to save the experiment')
 
+    # parser.add_argument('--test-k', type=int, required=True,
+    #                     help='change k of kmeans **To delete')
+    # parser.add_argument('--test-seed', type=int, required=True,
+    #                     help='change seed of kmeans **To delete')
+    parser.add_argument('--range-kmeans', type=int, required=True,
+                        nargs='*',
+                        help='gives the range for the kmeans')
+    parser.add_argument('--n-seeds', type=int, required=True,
+                        help='Number of seed to run with kmeans')
     args = parser.parse_args()
 
     coordinator = DATASETS[args.dataset]['coordinator']
