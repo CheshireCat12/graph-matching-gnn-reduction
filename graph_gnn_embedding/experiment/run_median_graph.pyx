@@ -1,9 +1,9 @@
+import os
 import random
 from time import time
 
 import numpy as np
 cimport numpy as np
-import pandas as pd
 from collections import defaultdict
 from itertools import product
 from progress.bar import Bar
@@ -37,6 +37,23 @@ class RunnerMedian(Runner):
 
         self.find_kmeans()
 
+    def save_centroids(self, list centroids, int n_cluster):
+        seed_split = self.coordinator.folder_dataset.split('/')[-3]
+        name = f'centroids_seed_split_{seed_split}_n_cluster_{n_cluster}'
+        filename = os.path.join(self.folder, name)
+
+        message = ','.join(centroid.name for centroid in centroids)
+        print(message)
+
+        # with open(filename, mode='a+') as fp:
+        #     fp.write(f'{message}')
+        # filename
+        #seed_split
+        #n_cluster
+
+        # save in the file
+        # - seed_init
+
     def find_kmeans(self):
         n_cores = self.parameters.num_cores
         parallel = n_cores > 0
@@ -48,17 +65,20 @@ class RunnerMedian(Runner):
 
         random.seed(42)
         seeds = [random.randint(1, 10000) for _ in range(self.parameters.n_seeds)]
-        # seeds = np.random.randint(0, 10000, self.parameters.n_seeds, dtype=int)
-        # n_clusters = range(*[int(val) for val in self.parameters.range_kmeans])
-        n_clusters = [120] #2, 4, 10, 30, 60, 120]
+        n_clusters = range(*[int(val) for val in self.parameters.range_kmeans])
 
-        for cls in sorted(individual_class, reverse=True):
+        for idx, cls in enumerate(individual_class): # sorted(individual_class, reverse=True):
             self.logger.data[f'cls_{cls}'] = {
+                'err_and_seed_per_k': defaultdict(lambda : list()),
                 'best_err_per_k': defaultdict(lambda : float('inf')),
                 'best_seed_per_k': {},
+                'centroids': {}
             }
 
+            cls_idx = np.where(np.array(labels) == cls)[0]
+            graphs_per_cls = [graphs_train[idx] for idx in cls_idx]
 
+            bar = Bar(f'Processing clustering [{idx+1}/{len(individual_class)}]', max=len(n_clusters) * len(seeds))
             for n_cluster, new_seed in product(n_clusters, seeds):
                 kmeans = Kmeans(n_cluster,
                                 self.coordinator.ged,
@@ -66,18 +86,21 @@ class RunnerMedian(Runner):
                                 seed=new_seed,
                                 n_cores=n_cores)
 
-                cls_idx = np.where(np.array(labels) == cls)[0]
-                graphs_per_cls = [graphs_train[idx] for idx in cls_idx]
-                print(f'Length graphs {len(graphs_per_cls)}')
                 kmeans.fit(graphs_per_cls)
                 err_clustering = kmeans.error
+
+                self.logger.data[f'cls_{cls}']['err_and_seed_per_k'][n_cluster].append((err_clustering, new_seed))
+
                 if err_clustering <= self.logger.data[f'cls_{cls}']['best_err_per_k'][n_cluster]:
                     self.logger.data[f'cls_{cls}']['best_err_per_k'][n_cluster] = err_clustering
                     self.logger.data[f'cls_{cls}']['best_seed_per_k'][n_cluster] = new_seed
+                    self.logger.data[f'cls_{cls}']['centroids'][n_cluster] = [centroid.name for centroid in kmeans.centroids]
+                    # self.save_centroids(kmeans.centroids, n_cluster)
 
-                    self.logger.save_data()
-
-            break
+                self.logger.save_data()
+                bar.next()
+            bar.finish()
+            # break
 
 
     def find_median(self, k=1):
