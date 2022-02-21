@@ -27,8 +27,10 @@ DATASETS = {
         'coordinator': {
             'dataset_name': 'proteins',
             'params_edit_cost': (1.0, 1.0, 1.0, 1.0, 'euclidean'),
-            'folder_dataset': './data/PROTEINS/',
-            'folder_labels': './data/PROTEINS/',
+            # 'folder_dataset': './data/PROTEINS/',
+            # 'folder_labels': './data/PROTEINS/',
+            'folder_dataset': '../graph-reduction-tripletLoss/results/PROTEINS/',
+            'folder_labels': '../graph-reduction-tripletLoss/results/PROTEINS/',
         }
     },
     'dd': {

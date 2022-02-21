@@ -135,7 +135,8 @@ class RunnerKNNGNN(Runner):
         predictions = knn.predict(graphs_test, k=best_k, num_cores=num_cores)
         prediction_time = time() - start_time
 
-        acc = calc_accuracy(np.array(labels_test, dtype=np.int32), predictions)
+        acc = calc_accuracy(np.array(labels_test, dtype=np.int32),
+                            np.array(predictions, dtype=np.int32))
 
         message = f'Best acc on Test : {acc:.2f}, best params: {best_params}, time: {prediction_time:.2f}s\n'
 
