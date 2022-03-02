@@ -76,6 +76,10 @@ class RunnerMedian(Runner):
         idx_centroids = [self._format_name(centroid.name)
                          for centroid in kmeans.centroids]
 
+        print('name and length')
+        print([centroid.name for centroid in kmeans.centroids])
+        print([len(centroid) for centroid in kmeans.centroids])
+
         correspondance = [(self._format_name(graph.name),
                            self._format_name(kmeans.centroids[centroid].name))
                           for graph, centroid in zip(graphs_per_cls, kmeans.labels)]
@@ -123,7 +127,7 @@ class RunnerMedian(Runner):
                                 seed=new_seed,
                                 n_cores=n_cores)
 
-                kmeans.fit(graphs_per_cls[:10])
+                kmeans.fit(graphs_per_cls[:30])
                 err_clustering = kmeans.error
 
                 self.logger.data[f'cls_{cls_}']['err_and_seed_per_k'][n_cluster].append((err_clustering, new_seed))
