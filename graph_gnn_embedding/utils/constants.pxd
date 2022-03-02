@@ -1,3 +1,0 @@
-cdef:
-    str EXTENSION_GRAPHML
-    str EXTENSION_SPLITS

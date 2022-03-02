@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from glob import glob
-import os
 from setuptools import setup, Extension
-from setuptools.command.install import install
-from setuptools.command.develop import develop
 
 
 install_requires = [
@@ -37,7 +34,7 @@ def extension_modules():
     import numpy
     ext = []
     files = glob('**/*.pyx', recursive=True)
-    packages = ['graph_gnn_embedding', 'experiments_gnn_embedding']
+    packages = ['kmeans', 'knn']
     for file in files:
         if any(file.startswith(pkg) for pkg in packages):
             ext_name = file[:-4].replace('/', '.')
@@ -59,8 +56,8 @@ for e in extensions:
     e.cython_directives = {'language_level': "3",  # all are Python-3
                            'embedsignature': True}
 
-setup(name='graph-matching-gnn-reduction',
-      version='0.1.1',
+setup(name='graph-matching-experiments',
+      version='0.1.2',
       description='A Cython package use to perform graph matching with reduced graphs',
       author='Anthony Gillioz',
       author_email='anthony.gillioz@outlook.com',

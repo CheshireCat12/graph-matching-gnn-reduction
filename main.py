@@ -2,7 +2,7 @@ import os.path
 from argparse import ArgumentParser, Namespace
 from glob import glob
 
-import graph_pkg.utils.logger as logger
+import graph_pkg_core.utils.logger as logger
 from graph_gnn_embedding.experiment.constants.dataset_constants import DATASETS
 from graph_gnn_embedding.experiment.run_knn_gnn_embedding import run_knn_gnn_embedding
 from graph_gnn_embedding.experiment.run_median_graph import run_median_graph
