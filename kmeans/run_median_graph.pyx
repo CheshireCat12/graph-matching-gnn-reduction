@@ -76,6 +76,10 @@ class RunnerMedian(Runner):
         idx_centroids = [self._format_name(centroid.name)
                          for centroid in kmeans.centroids]
 
+        print('name and length')
+        print([centroid.name for centroid in kmeans.centroids])
+        print([len(centroid) for centroid in kmeans.centroids])
+
         correspondance = [(self._format_name(graph.name),
                            self._format_name(kmeans.centroids[centroid].name))
                           for graph, centroid in zip(graphs_per_cls, kmeans.labels)]
