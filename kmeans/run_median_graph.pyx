@@ -123,8 +123,9 @@ class RunnerMedian(Runner):
                                 seed=new_seed,
                                 n_cores=n_cores)
 
-                kmeans.fit(graphs_per_cls[:10])
+                kmeans.fit(graphs_per_cls)
                 err_clustering = kmeans.error
+                print(f'Error: {err_clustering}')
 
                 self.logger.data[f'cls_{cls_}']['err_and_seed_per_k'][n_cluster].append((err_clustering, new_seed))
 
