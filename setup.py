@@ -34,7 +34,7 @@ def extension_modules():
     import numpy
     ext = []
     files = glob('**/*.pyx', recursive=True)
-    packages = ['kmeans', 'knn']
+    packages = ['kmeans', 'knn', 'graph_analysis']
     for file in files:
         if any(file.startswith(pkg) for pkg in packages):
             ext_name = file[:-4].replace('/', '.')

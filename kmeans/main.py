@@ -41,7 +41,7 @@ def main(args):
             coordinators.append(coordinator_tmp)
 
     if not coordinators:
-        raise FileNotFoundError(f'Folder {args.specific_name} not found!')
+        raise FileNotFoundError(f'Folder {args.specific_seed} not found!')
 
     folder_results = f'./results/{args.dataset}/{args.name_experiment}/'
 
