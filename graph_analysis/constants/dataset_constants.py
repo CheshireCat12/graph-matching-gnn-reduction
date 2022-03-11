@@ -1,3 +1,4 @@
+EDIT_COSTS = (1.0, 1.0, 1.0, 1.0, 'euclidean')
 DATASETS = {
     'enzymes': {
         'coordinator': {
@@ -27,10 +28,6 @@ DATASETS = {
         'coordinator': {
             'dataset_name': 'proteins',
             'params_edit_cost': (1.0, 1.0, 1.0, 1.0, 'euclidean'),
-            # 'folder_dataset': './data/PROTEINS/',
-            # 'folder_labels': './data/PROTEINS/',
-            'folder_dataset': '../../data/proteins/',
-            'folder_labels': '../../data/proteins/',
         }
     },
     'dd': {

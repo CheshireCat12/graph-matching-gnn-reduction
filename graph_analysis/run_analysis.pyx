@@ -5,6 +5,7 @@ cimport numpy as np
 from progress.bar import Bar
 from os.path import join
 
+from graph_pkg_utils.graph_visualization.graph_visualization import visualize
 from graph_pkg_core.coordinator.coordinator_vector_classifier cimport CoordinatorVectorClassifier
 from graph_pkg_core.graph.graph cimport Graph
 
@@ -65,7 +66,6 @@ cpdef int[::1] isolated_nodes(Graph graph):
     :return: 
     """
     degrees = np.asarray(graph.degrees())
-    # print(np.where(degrees == 0)[0])
     return np.where(degrees == 0)[0].astype(np.int32)
 
 cpdef int num_isolated_nodes(Graph graph):
@@ -78,7 +78,7 @@ cpdef void run_graph_analysis(arguments):
     cdef:
         CoordinatorVectorClassifier coordinator
 
-    coordinator_params = arguments.current_coordinator
+    coordinator_params = arguments.coordinator
     coordinator = CoordinatorVectorClassifier(**coordinator_params)
 
     tr_data, tr_labels = coordinator.train_split()
@@ -101,9 +101,10 @@ cpdef void run_graph_analysis(arguments):
             graph_stats['mean_degrees'].append(np.mean(graph.degrees()))
             graph_stats['max_degrees'].append(int(np.max(graph.degrees())))
 
-            # visualize(graph, arguments.folder_results)
+            visualize(graph, arguments.folder_results)
 
-    print(graph_stats)
+            bar.next()
+
     filename_graph_stats = join(arguments.folder_results,
                                 f'graph_stats.json')
     with open(filename_graph_stats, 'w') as file:
