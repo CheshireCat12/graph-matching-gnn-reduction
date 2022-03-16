@@ -3,8 +3,8 @@ DATASETS = {
         'coordinator': {
             'dataset_name': 'enzymes',
             'params_edit_cost': (1.0, 1.0, 1.0, 1.0, 'euclidean'),
-            'folder_dataset': './data/ENZYMES/',
-            'folder_labels': './data/ENZYMES/'
+            'folder_dataset': '../../data/enzymes/',
+            'folder_labels': '../../data/enzymes/'
         }
     },
     'NCI1': {
@@ -19,8 +19,8 @@ DATASETS = {
         'coordinator': {
             'dataset_name': 'mutagenicity',
             'params_edit_cost': (1.0, 1.0, 1.0, 1.0, 'euclidean'),
-            'folder_dataset': './data/Mutagenicity/',
-            'folder_labels': './data/Mutagencity/',
+            'folder_dataset': '../../data/mutagenicity/',
+            'folder_labels': '../../data/mutagencity/',
         }
     },
     'proteins': {

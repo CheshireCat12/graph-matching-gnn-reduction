@@ -9,6 +9,7 @@ cimport numpy as np
 from collections import defaultdict
 from itertools import product
 from progress.bar import Bar
+import re
 
 from graph_pkg_core.experiment.runner import Runner
 from graph_pkg_core.algorithm.kmeans cimport Kmeans
@@ -36,7 +37,7 @@ class RunnerMedian(Runner):
         self.find_kmeans()
 
     def _format_name(self, name: str) -> str:
-        return name
+        return re.search(r'[0-9]+', name).group()
 
     def _write_csv(self, path, fields, data):
         with open(path, mode='w') as f:
@@ -57,42 +58,42 @@ class RunnerMedian(Runner):
         seed_split = self.coordinator.folder_dataset.split('/')[-1]
 
         filename_centroids = f'centroids'\
-                             f'_seed_split_{seed_split}'\
                              f'_n_cluster_{n_cluster}'\
                              f'_cls_{cls_}.csv'
 
-        filename_correspondance = f'centroids_correspondance'\
-                                  f'_seed_split_{seed_split}'\
+        filename_correspondence = f'centroids_correspondence'\
                                   f'_n_cluster_{n_cluster}'\
                                   f'_cls_{cls_}.csv'
 
-        folder_centroids = join(self.folder, 'centroids')
+        folder_centroids = join(self.folder, 'centroids', seed_split)
         Path(folder_centroids).mkdir(parents=True, exist_ok=True)
         path_centroids = join(folder_centroids,
                                       filename_centroids)
         path_correspondence = join(folder_centroids,
-                                      filename_correspondance)
+                                      filename_correspondence)
 
-        idx_centroids = [self._format_name(centroid.name)
-                         for centroid in kmeans.centroids]
+        idx_centroids = [self._format_name(graphs_per_cls[idx_centroid].name)
+                         for idx_centroid in kmeans.idx_centroids]
 
-        print('name and length')
-        print([centroid.name for centroid in kmeans.centroids])
-        print([len(centroid) for centroid in kmeans.centroids])
-
-        correspondance = [(self._format_name(graph.name),
-                           self._format_name(kmeans.centroids[centroid].name))
+        # print('name and length')
+        # print([self._format_name(graphs_per_cls[idx_centroid].name)
+        #                  for idx_centroid in kmeans.idx_centroids])
+        # print([len(centroid) for centroid in kmeans.centroids])
+        t = [len(np.where(np.array(kmeans.labels) == k)[0]) for k, _ in enumerate(kmeans.idx_centroids)]
+        print(t)
+        correspondence = [(self._format_name(graph.name),
+                           self._format_name(graphs_per_cls[kmeans.idx_centroids[centroid]].name))
                           for graph, centroid in zip(graphs_per_cls, kmeans.labels)]
 
         fields_centroids = ['idx_centroid']
-        fields_correspondance = ['idx_graph', 'idx_centroid']
+        fields_correspondence = ['idx_graph', 'idx_centroid']
 
         self._write_csv(path_centroids,
                         fields_centroids,
                         idx_centroids)
         self._write_csv(path_correspondence,
-                        fields_correspondance,
-                        correspondance)
+                        fields_correspondence,
+                        correspondence)
 
     def find_kmeans(self):
         n_cores = self.parameters.num_cores
@@ -120,23 +121,26 @@ class RunnerMedian(Runner):
 
             bar = Bar(f'Processing clustering [{idx+1}/{len(individual_class)}]',
                       max=len(n_clusters) * len(seeds))
-            for n_cluster, new_seed in product(n_clusters, seeds):
-                kmeans = Kmeans(n_cluster,
-                                self.coordinator.ged,
-                                max_iter=30,
-                                seed=new_seed,
-                                n_cores=n_cores)
 
-                kmeans.fit(graphs_per_cls)
+            kmeans = Kmeans(self.coordinator.ged,
+                            graphs=graphs_per_cls,
+                            max_iter=30,
+                            n_cores=n_cores)
+
+            for n_cluster, new_seed in product(n_clusters, seeds):
+                kmeans.set_n_cluster_and_seed(n_cluster, new_seed)
+                kmeans.fit()
+
                 err_clustering = kmeans.error
-                print(f'Error: {err_clustering}')
 
                 self.logger.data[f'cls_{cls_}']['err_and_seed_per_k'][n_cluster].append((err_clustering, new_seed))
 
                 if err_clustering <= self.logger.data[f'cls_{cls_}']['best_err_per_k'][n_cluster]:
                     self.logger.data[f'cls_{cls_}']['best_err_per_k'][n_cluster] = err_clustering
                     self.logger.data[f'cls_{cls_}']['best_seed_per_k'][n_cluster] = new_seed
-                    self.logger.data[f'cls_{cls_}']['centroids'][n_cluster] = [centroid.name for centroid in kmeans.centroids]
+                    self.logger.data[f'cls_{cls_}']['centroids'][n_cluster] = [graphs_per_cls[idx_centroid].name
+                                                                               for idx_centroid in kmeans.idx_centroids]
+                    print(f'Error: {kmeans.error}')
                     self.save_centroids(graphs_per_cls, kmeans, cls_, n_cluster)
 
                 self.logger.save_data()
