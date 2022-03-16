@@ -31,8 +31,8 @@ def main(args):
     for dataset_folder in glob(dataset_folders):
         if dataset_folder.split('/')[-1] == args.specific_seed:
             coordinator_tmp = dict(coordinator)
-            coordinator_tmp['folder_dataset'] = dataset_folder
-            coordinator_tmp['folder_labels'] = dataset_folder
+            coordinator_tmp['folder_dataset'] = dataset_folder + '/data/'
+            coordinator_tmp['folder_labels'] = dataset_folder + '/data/'
             coordinators.append(coordinator_tmp)
         elif not args.specific_seed:
             coordinator_tmp = dict(coordinator)
@@ -41,7 +41,7 @@ def main(args):
             coordinators.append(coordinator_tmp)
 
     if not coordinators:
-        raise FileNotFoundError(f'Folder {args.specific_name} not found!')
+        raise FileNotFoundError(f'Folder {args.specific_seed} not found!')
 
     folder_results = f'./results/{args.dataset}/{args.name_experiment}/'
 

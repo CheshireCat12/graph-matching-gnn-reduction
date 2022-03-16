@@ -28,9 +28,11 @@ DATASETS = {
             'dataset_name': 'proteins',
             'params_edit_cost': (1.0, 1.0, 1.0, 1.0, 'euclidean'),
             # 'folder_dataset': './data/PROTEINS/',
+            'folder_dataset': '../../graph-matching-gnn-reduction/data/PROTEINS/100/',
+            'folder_labels': '../../graph-matching-gnn-reduction/data/PROTEINS/100/'
             # 'folder_labels': './data/PROTEINS/',
-            'folder_dataset': '../../data/proteins/',
-            'folder_labels': '../../data/proteins/',
+            # 'folder_dataset': '../../data/proteins/',
+            # 'folder_labels': '../../data/proteins/',
         }
     },
     'dd': {
