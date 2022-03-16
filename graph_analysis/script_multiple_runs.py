@@ -3,7 +3,7 @@ import subprocess
 from itertools import product
 
 datasets = ['PROTEINS', 'DD', 'ENZYMES', 'NCI1', 'Mutagenicity']
-level_reduction = ['100', '50', '25']
+level_reduction = ['25_freeze'] # '100', '50_freeze',
 seed = '1860'
 
 for dataset, lvl_red in product(datasets, level_reduction):
