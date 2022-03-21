@@ -15,6 +15,9 @@ lib/
 Pipfile
 Pipfile.lock
 
+# Pycharm config files
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
