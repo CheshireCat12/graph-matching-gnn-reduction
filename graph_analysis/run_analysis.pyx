@@ -74,11 +74,10 @@ cpdef int num_isolated_nodes(Graph graph):
 cpdef int num_edges(Graph graph):
     return np.sum(graph.degrees()) // 2
 
-cpdef void run_graph_analysis(arguments):
+cpdef void run_graph_analysis(coordinator_params, folder_results):
     cdef:
         CoordinatorVectorClassifier coordinator
 
-    coordinator_params = arguments.coordinator
     coordinator = CoordinatorVectorClassifier(**coordinator_params)
 
     tr_data, tr_labels = coordinator.train_split()
@@ -101,11 +100,11 @@ cpdef void run_graph_analysis(arguments):
             graph_stats['mean_degrees'].append(np.mean(graph.degrees()))
             graph_stats['max_degrees'].append(int(np.max(graph.degrees())))
 
-            visualize(graph, arguments.folder_results)
+            visualize(graph, folder_results)
 
             bar.next()
 
-    filename_graph_stats = join(arguments.folder_results,
+    filename_graph_stats = join(folder_results,
                                 f'graph_stats.json')
     with open(filename_graph_stats, 'w') as file:
         json.dump(graph_stats, file)
