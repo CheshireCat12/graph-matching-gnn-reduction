@@ -1,0 +1,9 @@
+numpy
+scipy
+torch
+torch-geometric
+jupyterlab
+requests
+pyparsing
+networkx
+tensorboard
