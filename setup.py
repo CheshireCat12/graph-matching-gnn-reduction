@@ -22,7 +22,9 @@ install_requires = [
     'bunch',
     'sklearn',
     'jupyterlab',
-    'pygad'
+    'pygad',
+    'brokenaxes',
+
 ]
 
 

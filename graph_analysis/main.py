@@ -108,7 +108,10 @@ def main(args):
         args.folder_results = init_folder_results(tmp_folder_results,
                                                   seed)
 
-        run_graph_analysis(args)
+        run_graph_analysis(coordinator,
+                           folder_results=args.folder_results,
+                           is_test_graphs=args.test_graphs,
+                           is_all_graphs=args.all_graphs)
 
 
 if __name__ == '__main__':
@@ -121,6 +124,11 @@ if __name__ == '__main__':
     parser.add_argument('--folder-results', type=str, required=True,
                         help='(e.g. --folder-results ./results/ )')
     parser.add_argument('--specific-seed', type=str, default=False)
+
+    parser.add_argument('--test-graphs', action='store_true', default=False,
+                        help='if present run for the test graphs')
+    parser.add_argument('--all-graphs', action='store_true', default=False,
+                        help='if present run for all the graphs')
 
     args = parser.parse_args()
 

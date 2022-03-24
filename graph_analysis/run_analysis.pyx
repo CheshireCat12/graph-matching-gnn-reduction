@@ -74,13 +74,18 @@ cpdef int num_isolated_nodes(Graph graph):
 cpdef int num_edges(Graph graph):
     return np.sum(graph.degrees()) // 2
 
-cpdef void run_graph_analysis(coordinator_params, folder_results):
+cpdef void run_graph_analysis(coordinator_params, folder_results, is_test_graphs, is_all_graphs):
     cdef:
         CoordinatorVectorClassifier coordinator
 
     coordinator = CoordinatorVectorClassifier(**coordinator_params)
 
-    tr_data, tr_labels = coordinator.train_split()
+    if is_test_graphs:
+        data, labels = coordinator.test_split()
+    elif is_all_graphs:
+        data = coordinator.graphs
+    else:
+        data, labels = coordinator.train_split()
 
     graph_stats = {
         'n_connected_components': [],
@@ -91,8 +96,8 @@ cpdef void run_graph_analysis(coordinator_params, folder_results):
         'max_degrees': [],
     }
 
-    with Bar('Processing', max=len(tr_data)) as bar:
-        for graph in tr_data:
+    with Bar('Processing', max=len(data)) as bar:
+        for graph in data:
             graph_stats['n_connected_components'].append(num_connected_components(graph))
             graph_stats['n_isolated_nodes'].append(num_isolated_nodes(graph))
             graph_stats['n_nodes'].append(graph.num_nodes_max)
